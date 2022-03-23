@@ -14,6 +14,6 @@ export const ProfileCard = ({ writer }) => {
                 <p>{writer.phone}</p>
             </div>
         </div>
-    )
-}
+    );
+};
 
