@@ -1,67 +1,32 @@
 import { useEffect, useState } from "react";
-import ProfileForm from "./components/ProfileForm";
-import ProfileCard from "./ProfileCard";
+import Axios from "axios";
 
 function App() {
-  const [allProfile, setAllProfile] = useState([
-    {
-      firstName: "Hannah",
-      lastName: "Montana",
-      email: "hannah.montana@email.com",
-      phone: "+233 024 455 00",
-    },
-  ]);
+  const [posts, setPosts] = useState([]);
 
-  const submit = (profile) => {
-    const arr = allProfile;
-    arr.push(profile);
-    setAllProfile(arr);
-  };
-  //       const [data, setData] = useState({
-  //         writers: [],
-  //         loading: false,
-  // });
+  useEffect(() => {
+    (async () => {
+      let response = await Axios({
+        method: "GET",
+        url: "https://jsonplaceholder.typicode.com/posts",
+      });
 
-  // const handleClick = () => {
-  //   setData((prevData) =>({
-  //     ...prevData,
-  //   }));
-
-  //    setTimeout(()=> {
-  //         const getWriters = async ()=> {
-  //           const res = await fetch("/writers.json");
-  //           const data = await res.json();
-  //           setData({
-  //             writers:data,
-  //             loading: false,
-  //           });
-  //         };
-  //         getWriters();
-  //       }, 2000);
-  // }
-
-  // if(data.loading){
-  //   return(
-  //     <div className="container">
-  //       <h1>Writer Profiles</h1>
-  //       <div className="container">
-  //       <div className="card action"></div>
-  //       <p className="infoText">Loading...</p>
-  //       </div>
-  //     </div>
-  //   )
-
-  // }
+      setPosts(response.data);
+    })();
+  });
 
   return (
-    <div>
-      <h1>Writer Profile</h1>
-      <div className="container">
-        <ProfileForm submit={submit} />
-        {allProfile.map((writer, idx) => (
-          <ProfileCard key={idx} writer={writer} />
-        ))}
-        ;
+    <div className="app">
+      <h1> Daily Posts </h1>
+      <div>
+        <div className="list">
+          {posts.map((post) => (
+            <div key={post.id} className="post">
+              <h3>{post.title}</h3>
+              <p>{post.body}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
